@@ -1,4 +1,5 @@
 from os import getenv
+from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
@@ -13,6 +14,8 @@ from resources.tag import blp as TagBlp
 from resources.user import blp as UserBlp
 
 def create_app(db_url=None):
+    load_dotenv()
+
     app=Flask(__name__)
 
     app.config["PROPAGATE_EXCEPTIONS"] = True
@@ -30,9 +33,9 @@ def create_app(db_url=None):
     app.config['JWT_SECRET_KEY']=getenv("JWT_SECRET_KEY","1234567890")
 
     db.init_app(app)
-    # migrate=Migrate(app,db)
-    with app.app_context():
-        db.create_all()
+    migrate=Migrate(app,db)
+    # with app.app_context():
+    #     db.create_all()
 
 
     jwt = JWTManager(app)
