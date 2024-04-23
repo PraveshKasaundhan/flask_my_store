@@ -16,7 +16,7 @@ def create_app(db_url=None):
     app=Flask(__name__)
 
     app.config["PROPAGATE_EXCEPTIONS"] = True
-    app.config["API_TITLE"] = "Stores & Items REST API"
+    app.config["API_TITLE"] = "My Stores REST API"
     app.config["API_VERSION"] = "v1"
 
     app.config["OPENAPI_VERSION"] = "3.1.0"
@@ -30,9 +30,9 @@ def create_app(db_url=None):
     app.config['JWT_SECRET_KEY']=getenv("JWT_SECRET_KEY","1234567890")
 
     db.init_app(app)
-    migrate=Migrate(app,db)
-    # with app.app_context():
-    #     db.create_all()
+    # migrate=Migrate(app,db)
+    with app.app_context():
+        db.create_all()
 
 
     jwt = JWTManager(app)
