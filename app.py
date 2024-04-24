@@ -4,6 +4,8 @@ from flask import Flask, jsonify
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
+import redis
+from rq import Queue
 
 from db import db
 from blocklist import BLOCKLIST
@@ -15,8 +17,10 @@ from resources.user import blp as UserBlp
 
 def create_app(db_url=None):
     load_dotenv()
-
     app=Flask(__name__)
+
+    connection=redis.from_url(getenv("REDIS_URL"))
+    app.queue=Queue("emails",connection=connection)
 
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "My Stores REST API"
