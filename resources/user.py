@@ -26,7 +26,7 @@ class UserRegister(MethodView):
             db.session.add(user)
             db.session.commit()
 
-            current_app.queue.enqueue(send_user_register_email,user.email,user.username)
+            # current_app.queue.enqueue(send_user_register_email,user.email,user.username)
         
         except SQLAlchemyError as e:
             abort(500,str(e))
